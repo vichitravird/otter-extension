@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Otter Icon Generator</title>
+    <style>
+      :root {
+        --amber: #f59e0b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: #fffaf0;
+        color: #3c2f1c;
+      }
+
+      .container {
+        max-width: 560px;
+        margin: 0 auto;
+        background: #fffdf7;
+        border: 1px solid #f8ddb0;
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 12px 24px rgba(245, 158, 11, 0.15);
+      }
+
+      h1 {
+        margin: 0 0 8px 0;
+        font-size: 20px;
+      }
+
+      p {
+        margin: 0 0 14px 0;
+        color: #7a6750;
+      }
+
+      .preview-wrap {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0 16px;
+      }
+
+      #iconCanvas {
+        width: 128px;
+        height: 128px;
+        border-radius: 14px;
+        border: 1px solid #f0d4a6;
+        background: #fff7e7;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      button {
+        border: none;
+        border-radius: 12px;
+        padding: 11px 12px;
+        font-size: 14px;
+        font-weight: 650;
+        background: linear-gradient(135deg, var(--amber) 0%, #d97706 100%);
+        color: #fff;
+        cursor: pointer;
+        transition: transform 120ms ease, filter 120ms ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.04);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Otter Icon Generator</h1>
+      <p>Preview and export extension icons at 16, 48, and 128 px.</p>
+
+      <div class="preview-wrap">
+        <canvas id="iconCanvas" width="128" height="128"></canvas>
+      </div>
+
+      <div class="buttons">
+        <button id="download16" type="button">Download 16x16</button>
+        <button id="download48" type="button">Download 48x48</button>
+        <button id="download128" type="button">Download 128x128</button>
+      </div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("iconCanvas");
+      const ctx = canvas.getContext("2d");
+
+      function drawRoundedRect(context, x, y, width, height, radius) {
+        context.beginPath();
+        context.moveTo(x + radius, y);
+        context.lineTo(x + width - radius, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + radius);
+        context.lineTo(x + width, y + height - radius);
+        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        context.lineTo(x + radius, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - radius);
+        context.lineTo(x, y + radius);
+        context.quadraticCurveTo(x, y, x + radius, y);
+        context.closePath();
+      }
+
+      function drawIcon(size) {
+        canvas.width = size;
+        canvas.height = size;
+
+        ctx.clearRect(0, 0, size, size);
+
+        const padding = Math.max(1, Math.round(size * 0.06));
+        const cardSize = size - padding * 2;
+        const radius = Math.round(size * 0.2);
+
+        ctx.save();
+        ctx.shadowColor = "rgba(0,0,0,0.20)";
+        ctx.shadowBlur = Math.max(1, Math.round(size * 0.08));
+        ctx.shadowOffsetY = Math.max(1, Math.round(size * 0.03));
+        drawRoundedRect(ctx, padding, padding, cardSize, cardSize, radius);
+        ctx.fillStyle = "#F59E0B";
+        ctx.fill();
+        ctx.restore();
+
+        const fontSize = Math.round(size * 0.52);
+        ctx.font = `${fontSize}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText("🦦", size / 2, size / 2 + size * 0.03);
+      }
+
+      function downloadIcon(size, filename) {
+        drawIcon(size);
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = filename;
+        link.click();
+      }
+
+      document.getElementById("download16").addEventListener("click", () => {
+        downloadIcon(16, "icon16.png");
+      });
+
+      document.getElementById("download48").addEventListener("click", () => {
+        downloadIcon(48, "icon48.png");
+      });
+
+      document.getElementById("download128").addEventListener("click", () => {
+        downloadIcon(128, "icon128.png");
+      });
+
+      drawIcon(128);
+    </script>
+  </body>
+</html>
