@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Otter Sidebar</title>
+    <style>
+      :root {
+        --bg: #fffaf0;
+        --card: #fffdf7;
+        --text: #2f2a22;
+        --muted: #8d7f6b;
+        --accent: #f59e0b;
+        --accent-strong: #d97706;
+        --border: #f7d8a1;
+        --shadow: 0 10px 28px rgba(245, 158, 11, 0.16);
+        --radius: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 380px;
+        height: 100vh;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        color: var(--text);
+        background: linear-gradient(180deg, #fffaf0 0%, #fff6e8 100%);
+      }
+
+      body {
+        padding: 14px;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        height: calc(100vh - 28px);
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px;
+        animation: slideIn 220ms ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .close-btn {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 999px;
+        background: #fff3dc;
+        color: #8a5a00;
+        cursor: pointer;
+        transition: transform 120ms ease, background-color 120ms ease;
+      }
+
+      .close-btn:hover {
+        background: #ffe8bf;
+        transform: scale(1.06);
+      }
+
+      .site-label {
+        font-size: 12px;
+        color: var(--muted);
+        background: #fff6e6;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 6px 10px;
+      }
+
+      .section-title {
+        font-size: 13px;
+        font-weight: 650;
+        color: #7a5d2b;
+        margin-bottom: 6px;
+      }
+
+      .preview-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .refresh-btn {
+        border: 1px solid var(--border);
+        background: #fff8ea;
+        color: #815900;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: transform 120ms ease, background-color 120ms ease;
+      }
+
+      .refresh-btn:hover {
+        background: #ffefcb;
+        transform: translateY(-1px);
+      }
+
+      .preview-box,
+      .draft-box {
+        width: 100%;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: #fffefb;
+        padding: 11px 12px;
+        font-size: 13px;
+        line-height: 1.45;
+        color: #433628;
+        resize: none;
+      }
+
+      .preview-box {
+        min-height: 72px;
+      }
+
+      .generate-btn {
+        width: 100%;
+        border: none;
+        border-radius: 14px;
+        padding: 12px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #ffffff;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+        cursor: pointer;
+        box-shadow: 0 8px 18px rgba(245, 158, 11, 0.35);
+        transition: transform 140ms ease, filter 140ms ease;
+      }
+
+      .generate-btn:hover {
+        filter: brightness(1.05);
+        transform: translateY(-1px);
+      }
+
+      .output-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .draft-box {
+        flex: 1;
+        min-height: 140px;
+      }
+
+      .spinner {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 3px solid #f9dfae;
+        border-top-color: var(--accent);
+        animation: spin 0.9s linear infinite;
+        display: none;
+        align-self: center;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .button-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .chip-btn {
+        border: 1px solid var(--border);
+        background: #fff8ea;
+        color: #664300;
+        border-radius: 12px;
+        font-size: 12px;
+        padding: 8px 4px;
+        cursor: pointer;
+        transition: transform 120ms ease, background-color 120ms ease;
+      }
+
+      .chip-btn:hover {
+        background: #ffefcb;
+        transform: translateY(-1px);
+      }
+
+      .bottom-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .action-btn {
+        border: none;
+        border-radius: 12px;
+        padding: 11px 10px;
+        font-size: 13px;
+        font-weight: 650;
+        cursor: pointer;
+        transition: transform 120ms ease, filter 120ms ease;
+      }
+
+      .copy-btn {
+        color: #5b3f09;
+        background: #ffe8bc;
+      }
+
+      .replace-btn {
+        color: #ffffff;
+        background: #f59e0b;
+      }
+
+      .action-btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.03);
+      }
+
+      .empty-state {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="sidebar">
+      <header class="topbar">
+        <div class="brand">
+          <span aria-hidden="true">🦦</span>
+          <span>Otter</span>
+        </div>
+        <button id="closeBtn" class="close-btn" type="button" aria-label="Close sidebar">✕</button>
+      </header>
+
+      <div id="siteLabel" class="site-label">Reading from: this site</div>
+
+      <section class="preview-wrap">
+        <div class="preview-header">
+          <div class="section-title">Detected text</div>
+          <button id="refreshBtn" class="refresh-btn" type="button">Refresh</button>
+        </div>
+        <textarea id="inputPreview" class="preview-box" readonly></textarea>
+      </section>
+
+      <button id="generateBtn" class="generate-btn" type="button">✨ Generate Draft</button>
+
+      <section class="output-wrap">
+        <div class="section-title">Draft output</div>
+        <textarea id="draftOutput" class="draft-box" readonly></textarea>
+        <div id="loadingSpinner" class="spinner" aria-label="Loading"></div>
+        <p id="emptyState" class="empty-state">
+          Hi! I'm Otter 🦦 Start typing anywhere and I'll help you craft the perfect message.
+        </p>
+      </section>
+
+      <section>
+        <div class="section-title">Tone</div>
+        <div class="button-grid">
+          <button class="chip-btn" type="button" data-tone="Formal">Formal</button>
+          <button class="chip-btn" type="button" data-tone="Friendly">Friendly</button>
+          <button class="chip-btn" type="button" data-tone="Assertive">Assertive</button>
+          <button class="chip-btn" type="button" data-tone="Empathetic">Empathetic</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">Length</div>
+        <div class="button-grid">
+          <button class="chip-btn" type="button" data-length="Shorten">Shorten</button>
+          <button class="chip-btn" type="button" data-length="Expand">Expand</button>
+          <button class="chip-btn" type="button" data-length="Bullets">Bullets</button>
+          <button class="chip-btn" type="button" data-length="Summarize">Summarize</button>
+        </div>
+      </section>
+
+      <div class="bottom-actions">
+        <button id="copyBtn" class="action-btn copy-btn" type="button">Copy</button>
+        <button id="replaceBtn" class="action-btn replace-btn" type="button">Replace in page</button>
+      </div>
+    </main>
+
+    <script src="sidebar.js"></script>
+  </body>
+</html>
