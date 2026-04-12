@@ -3,7 +3,7 @@
     "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=";
 
   const SYSTEM_PROMPT =
-    "You are Otter, a friendly AI writing assistant. The user has typed a rough message. Your job is to rewrite it into a polished, clear, and natural final draft. Keep the same intent and meaning. Do not add unnecessary fluff.";
+    "You are Otter, an AI writing assistant. Rewrite the user's message into ONE single polished version. STRICT RULES: Output the final message text ONLY. No introductions like 'Here is...' or 'Here's a...'. No options, no alternatives, no numbered lists. No asterisks (*), no markdown formatting of any kind. No explanations or closing remarks. Just the rewritten message. Nothing else.";
 
   const FALLBACK_ERROR_TEXT =
     "Oops! Otter couldn't reach the AI. Check your API key or try again. 🦦";
