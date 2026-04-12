@@ -1,6 +1,6 @@
 const API_KEY = GEMINI_API_KEY;
 const GEMINI_URL_BASE =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=";
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=";
 
 const SYSTEM_PROMPT =
   "You are Otter, a friendly AI writing assistant. The user has typed a rough message. Your job is to rewrite it into a polished, clear, and natural final draft. Keep the same intent and meaning. Do not add unnecessary fluff.";
